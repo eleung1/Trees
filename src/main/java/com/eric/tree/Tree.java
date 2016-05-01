@@ -6,4 +6,6 @@ public interface Tree
     
     public void delete(TreeNode root, int v);
     
+    public TreeNode find(TreeNode root, int v);
+    
 }
