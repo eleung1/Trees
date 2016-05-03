@@ -82,7 +82,8 @@ public class BinarySearchTree implements Tree
 			}
 			else 
 			{
-				replaceNodeInParent(nodeToDelete, null);
+				//replaceNodeInParent(nodeToDelete, null);
+				severeParentLink(nodeToDelete);
 			}
 		}
 		else if ( nodeToDelete.leftChild != null && nodeToDelete.rightChild == null )
@@ -109,18 +110,44 @@ public class BinarySearchTree implements Tree
 	}
 	
 	/**
-	 * Helper method to replace nodeToDelete's parent's child node.
+	 * Helper method to set nodeToDelete's parent's link to itself to null.
 	 * 
+	 * @param nodeToDelete
 	 */
-	private void replaceNodeInParent(TreeNode nodeToDelete, TreeNode replacementNode)
+	private void severeParentLink(TreeNode nodeToDelete)
 	{
 		if ( nodeToDelete.parent.leftChild == nodeToDelete )
 		{
-			nodeToDelete.parent.leftChild = replacementNode;
+			nodeToDelete.parent.leftChild = null;
 		}
 		else if ( nodeToDelete.parent.rightChild == nodeToDelete )
 		{
-			nodeToDelete.parent.rightChild = replacementNode;
+			nodeToDelete.parent.rightChild = null;
+		}
+	}
+	
+	
+	/**
+	 * Helper method to replace nodeToDelete's parent's child node.
+	 * 
+	 */
+	public void replaceNodeInParent(TreeNode nodeToDelete, TreeNode replacementNode)
+	{
+		if ( nodeToDelete != this.root )
+		{
+			if ( nodeToDelete.parent.leftChild == nodeToDelete )
+			{
+				nodeToDelete.parent.leftChild = replacementNode;
+			}
+			else if ( nodeToDelete.parent.rightChild == nodeToDelete )
+			{
+				nodeToDelete.parent.rightChild = replacementNode;
+			}
+		}
+		else
+		{
+			// nodeToDelete is root.  Replace it root with the replacement node
+			this.root = replacementNode;
 		}
 		
 		if ( replacementNode != null )

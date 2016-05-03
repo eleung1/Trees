@@ -71,8 +71,159 @@ public class BinarySearchTreeTest
     assertEquals(7, node7.value);
   }
   
+  /**
+   * Case1: no children.
+   * 
+   * The node to be deleted is the root of the tree.
+   * 
+   */
   @Test
-  public void testDelete()
+  public void testDelete_noChildrenIsRoot_emptyTree()
+  {
+  	bst.insert(bst.root, 5);
+  	assertEquals(5, bst.root.value);
+  	bst.delete(bst.root, 5);
+  	assertNull(bst.root);
+  }
+  
+  /**
+   * Case1: no children. 
+   * 
+   * The node to be deleted is NOT the root of the tree.  Simply severe the link between its parent and the node.
+   * 
+   */
+  @Test
+  public void testDelete_noChildrenIsNotRoot_deleteTheNode()
+  {
+  	bst.insert(bst.root, 5);
+  	bst.insert(bst.root, 3);
+  	
+  	assertEquals(3, bst.root.leftChild.value);
+  	
+  	bst.delete(bst.root, 3);
+  	assertNull(bst.root.leftChild);
+  }
+  
+  /**
+   * Case2: 1 children.
+   * 
+   * The node to be deleted is the root of the tree.
+   * 
+   */
+  @Test
+  public void testDelete_1LeftChildIsRoot_replaceRootWithChild()
+  {
+  	bst.insert(bst.root, 5);
+  	bst.insert(bst.root, 3);
+  	
+  	// delete the root
+  	bst.delete(bst.root, 5);
+  	
+  	assertEquals(3, bst.root.value);
+  	assertNull(bst.root.leftChild);
+  	assertNull(bst.root.rightChild);
+  }
+  
+  /**
+   * Case2: 1 children.
+   * 
+   * The node to be deleted is the root of the tree.
+   * 
+   */
+  @Test
+  public void testDelete_1RightChildIsRoot_replaceRootWithChild()
+  {
+  	bst.insert(bst.root, 5);
+  	bst.insert(bst.root, 8);
+  	
+  	// delete the root
+  	bst.delete(bst.root, 5);
+  	
+  	assertEquals(8, bst.root.value);
+  	assertNull(bst.root.leftChild);
+  	assertNull(bst.root.rightChild);
+  }
+  
+  /**
+   * Case2: 1 left children.
+   * 
+   * The node to be deleted is not the root of the tree.
+   * 
+   */
+  @Test
+  public void testDelete_1LeftChildIsNotRoot_replaceNodeWithChild()
+  {
+  	bst.insert(bst.root, 5);
+  	bst.insert(bst.root, 3);
+  	bst.insert(bst.root, 1);
+  	
+  	bst.delete(bst.root, 3);
+  	
+  	assertEquals(5, bst.root.value);
+  	assertEquals(1, bst.root.leftChild.value);
+  	assertEquals(bst.root, bst.root.leftChild.parent);
+  	assertNull(bst.root.rightChild);
+  }
+  
+  /**
+   * Case2: 1 right children.
+   * 
+   * The node to be deleted is not the root of the tree.
+   * 
+   */
+  @Test
+  public void testDelete_1RightChildIsNotRoot_replaceNodeWithChild()
+  {
+  	bst.insert(bst.root, 5);
+  	bst.insert(bst.root, 8);
+  	bst.insert(bst.root, 10);
+  	
+  	bst.delete(bst.root, 8);
+  	
+  	assertEquals(5, bst.root.value);
+  	assertEquals(10, bst.root.rightChild.value);
+  	assertEquals(bst.root, bst.root.rightChild.parent);
+  	assertNull(bst.root.leftChild);
+  }
+  
+  @Test
+  public void testDelete_2ChildrenIsRoot_replaceRootWithMinNodeInRightSubtree()
+  {
+  	bst.insert(bst.root, 5);
+  	bst.insert(bst.root, 3);
+  	bst.insert(bst.root, 8);
+  	
+  	// delete root
+  	bst.delete(bst.root, 5);
+  	
+  	assertEquals(8, bst.root.value);
+  	assertNull(bst.root.rightChild);
+  	assertEquals(3, bst.root.leftChild.value);
+  	assertEquals(8, bst.root.leftChild.parent.value);
+  }
+  
+  @Test
+  public void testDelete_2ChildrenIsNotRoot_replaceNodeWithMinNodeInRightSubtree()
+  {
+  	bst.insert(bst.root, 5);
+  	bst.insert(bst.root, 3);
+  	bst.insert(bst.root, 8);
+  	bst.insert(bst.root, 1);
+  	bst.insert(bst.root, 4);
+  	
+  	// delete node
+  	bst.delete(bst.root, 3);
+  	
+  	assertEquals(5, bst.root.value);
+  	assertEquals(4, bst.root.leftChild.value);
+  	assertEquals(bst.root, bst.root.leftChild.parent);
+  	assertEquals(1, bst.root.leftChild.leftChild.value);
+  	assertEquals(4, bst.root.leftChild.leftChild.parent.value);
+  	assertEquals(8, bst.root.rightChild.value);
+  }
+  
+  @Test
+  public void testDelete_general()
   {
   	bst.insert(bst.root, 5);
     bst.insert(bst.root, 2);
@@ -81,13 +232,18 @@ public class BinarySearchTreeTest
     bst.insert(bst.root, 3);
     bst.insert(bst.root, 6);
     
-    System.out.println("Before deletion:");
+    System.out.println("\nBefore deletion:");
     bst.preOrderTraversal(bst.root);
     
     bst.delete(bst.root, 5);
     
-    System.out.println("After deletion:");
+    System.out.println("\nAfter deletion:");
     bst.preOrderTraversal(bst.root);
+    
+    assertEquals(6, bst.root.value);
+    assertEquals(7, bst.root.rightChild.value);
+    assertNull(bst.root.rightChild.leftChild);
+    assertNull(bst.root.rightChild.rightChild);
     
   }
   
@@ -101,7 +257,7 @@ public class BinarySearchTreeTest
     bst.insert(bst.root, 3);
     bst.insert(bst.root, 6);
     
-    System.out.println("Pre Order: ");
+    System.out.println("\nPre Order: ");
     bst.preOrderTraversal(bst.root);
     System.out.println("\nIn Order: ");
     bst.inOrderTraversal(bst.root);
