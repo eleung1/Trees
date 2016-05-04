@@ -1,38 +1,15 @@
 package com.eric.tree;
 
+/**
+ * AVL tree.  Self-balancing binary search tree.
+ * 
+ * The tree is named after the inventors: Georgy Adelson-Velsky and Evgenii Landis.
+ * 
+ * @author Eric Leung
+ *
+ */
 public class AVLTree extends BinarySearchTree
 {
-	@Override
-	public TreeNode insert(TreeNode root, int v)
-	{
-		if (root == null)
-		{
-			root = new TreeNode(v);
-			if (this.root == null)
-			{
-				// brand new tree, set this.root to root
-				this.root = root;
-			}
-		}
-
-		if (root.value == v)
-		{
-			// value already in tree
-		}
-		else if (root.value > v)
-		{
-			root.leftChild = insert(root.leftChild, v);
-			root.leftChild.parent = root;
-		}
-		else
-		{
-			root.rightChild = insert(root.rightChild, v);
-			root.rightChild.parent = root;
-		}
-
-		return root;
-	}
-	
 	public TreeNode insertAndBalance(TreeNode root, int v)
 	{
 		TreeNode rc = insert(root,v);
@@ -65,6 +42,31 @@ public class AVLTree extends BinarySearchTree
 					rightRotate(unbalancedRoot);
 					break;
 				}
+				else if ( unbalancedRoot.leftChild != null && unbalancedRoot.leftChild.rightChild != null )
+				{
+					// Left right case
+					leftRotate(unbalancedRoot.leftChild);
+					rightRotate(unbalancedRoot);
+					break;
+				}
+				else if ( unbalancedRoot.rightChild != null && unbalancedRoot.rightChild.rightChild != null )
+				{
+					// Right right case
+					leftRotate(unbalancedRoot);
+					break;
+				}
+				else if ( unbalancedRoot.rightChild != null && unbalancedRoot.rightChild.leftChild != null )
+				{
+					// Right left case
+					rightRotate(unbalancedRoot.rightChild);
+					leftRotate(unbalancedRoot);
+					break;
+				}
+				else
+				{
+					// should not get to here...
+					throw new IllegalStateException();
+				}
 			}
 			else
 			{
@@ -76,24 +78,35 @@ public class AVLTree extends BinarySearchTree
 	public void rightRotate(TreeNode node)
 	{
 		TreeNode originalLeftChild = node.leftChild;
+		TreeNode originalLeftRightGrandChild = originalLeftChild.rightChild;
 		
-		// updated the node's parent before rotating it to the right.
-		//replaceNodeInParent(node, originalLeftChild);
-		originalLeftChild.parent = node.parent;
-		
-		node.leftChild = originalLeftChild.rightChild;
-		
-		if ( originalLeftChild.rightChild != null )
-		{
-			originalLeftChild.rightChild.parent = node;
-		}
+		replaceNodeInParent(node, originalLeftChild);
 		
 		originalLeftChild.rightChild = node;
 		node.parent = originalLeftChild;
 		
-		if (this.root == node)
+		node.leftChild = originalLeftRightGrandChild;
+		if ( originalLeftRightGrandChild != null )
 		{
-			this.root = originalLeftChild;
+			originalLeftRightGrandChild.parent = node;
+		}
+		
+	}
+	
+	public void leftRotate(TreeNode node)
+	{
+		TreeNode originalRightChild = node.rightChild;
+		TreeNode originalRightLeftGrandChild = originalRightChild.leftChild;
+		
+		replaceNodeInParent(node, originalRightChild);
+		
+		originalRightChild.leftChild = node;
+		node.parent = originalRightChild;
+		
+		node.rightChild = originalRightLeftGrandChild;
+		if ( originalRightLeftGrandChild != null )
+		{
+			originalRightLeftGrandChild.parent = node;
 		}
 	}
 	
