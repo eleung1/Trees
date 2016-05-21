@@ -5,6 +5,14 @@ package com.eric.tree;
  * 
  * The tree is named after the inventors: Georgy Adelson-Velsky and Evgenii Landis.
  * 
+ * Complexity:
+ * 
+ * Average              Worst
+ * Search: O(log n)     O(log n)
+ * Insert: O(log n)     O(log n)
+ * Delete: O(log n)     O(log n)
+ * Space:  O(n)         O(n)
+ * 
  * @author Eric Leung
  *
  */
@@ -17,6 +25,21 @@ public class AVLTree extends BinarySearchTree
 		return rc;
 	}
 	
+	public void deleteAndBalance(TreeNode root, int v)
+	{
+	  TreeNode deletedNode = find(root, v);
+	  
+	  // Delete the node
+	  delete(root, v);
+	  
+	  // Back-trace from deletedNode all the way up to the first unbalanced node and balance if needed
+	  if ( deletedNode != null )
+	  {
+	    balance(deletedNode.parent);
+	  }
+	  
+	}
+	
 	/**
 	 * Balancer the tree after inserting the newNode.
 	 * 
@@ -27,15 +50,15 @@ public class AVLTree extends BinarySearchTree
 		
 		TreeNode currNode = newNode;
 		
-		while ( currNode.parent != null )
+		while ( currNode != null )
 		{
 			
-			int balanceFactor = getBalanceFactor(currNode.parent);
+			int balanceFactor = getBalanceFactor(currNode);
 			
 			if ( balanceFactor > 1 )
 			{
 				// balance the tree
-				TreeNode unbalancedRoot = currNode.parent;
+				TreeNode unbalancedRoot = currNode;
 				if ( unbalancedRoot.leftChild != null && unbalancedRoot.leftChild.leftChild != null )
 				{
 					// Left left case.  Right rotate unbalanced root.

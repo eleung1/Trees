@@ -86,6 +86,15 @@ public class BinarySearchTreeTest
   	assertNull(bst.root);
   }
   
+  @Test
+  public void testDelete_nonExistentNode_returnNull()
+  {
+    bst.insert(bst.root, 5);
+    bst.insert(bst.root, 3);
+    
+    bst.delete(bst.root, 99);
+  }
+  
   /**
    * Case1: no children. 
    * 
@@ -101,6 +110,7 @@ public class BinarySearchTreeTest
   	assertEquals(3, bst.root.leftChild.value);
   	
   	bst.delete(bst.root, 3);
+  	
   	assertNull(bst.root.leftChild);
   }
   
@@ -195,7 +205,7 @@ public class BinarySearchTreeTest
   	
   	// delete root
   	bst.delete(bst.root, 5);
-  	
+
   	assertEquals(8, bst.root.value);
   	assertNull(bst.root.rightChild);
   	assertEquals(3, bst.root.leftChild.value);

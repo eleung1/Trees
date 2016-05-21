@@ -167,6 +167,13 @@ public class AVLTreeTest
     
     System.out.println("PreOrder:");
     avl2.preOrderTraversal(avl2.root);
+    
+    assertEquals(3, avl2.root.value);
+    assertEquals(2, avl2.root.leftChild.value);
+    assertEquals(1, avl2.root.leftChild.leftChild.value);
+    assertEquals(5, avl2.root.rightChild.value);
+    assertEquals(4, avl2.root.rightChild.leftChild.value);
+    assertEquals(7, avl2.root.rightChild.rightChild.value);
 	}
 	
 	@Test
@@ -215,4 +222,98 @@ public class AVLTreeTest
 		assertEquals(avl2.root, avl2.root.rightChild.parent);
 	}
 	
+	@Test
+	public void testDeleteWithBalance_LeftLeftCase()
+	{
+	  avl2.insertAndBalance(avl2.root, 3);
+    avl2.insertAndBalance(avl2.root, 2);
+    avl2.insertAndBalance(avl2.root, 4);
+    avl2.insertAndBalance(avl2.root, 1);
+    
+    assertEquals(3, avl2.root.value);
+    assertEquals(2, avl2.root.leftChild.value);
+    assertEquals(4, avl2.root.rightChild.value);
+    assertEquals(1, avl2.root.leftChild.leftChild.value);
+    
+    avl2.deleteAndBalance(avl2.root, 4);
+    System.out.println("PreOrder:");
+    avl2.preOrderTraversal(avl2.root);
+    
+    assertEquals(2, avl2.root.value);
+    assertEquals(1, avl2.root.leftChild.value);
+    assertEquals(3, avl2.root.rightChild.value);
+	}
+	
+	@Test
+	public void testDeleteWithBalance_LeftRightCase()
+	{
+	  avl2.insertAndBalance(avl2.root, 3);
+    avl2.insertAndBalance(avl2.root, 1);
+    avl2.insertAndBalance(avl2.root, 4);
+    avl2.insertAndBalance(avl2.root, 2);
+    
+    assertEquals(3, avl2.root.value);
+    assertEquals(1, avl2.root.leftChild.value);
+    assertEquals(4, avl2.root.rightChild.value);
+    assertEquals(2, avl2.root.leftChild.rightChild.value);
+    
+    avl2.deleteAndBalance(avl2.root, 4);
+    System.out.println("PreOrder:");
+    avl2.preOrderTraversal(avl2.root);
+    
+    assertEquals(2, avl2.root.value);
+    assertEquals(1, avl2.root.leftChild.value);
+    assertEquals(3, avl2.root.rightChild.value);
+	}
+	
+	@Test
+	public void testDeleteWithBalance_RightRightCase()
+	{
+	  avl2.insertAndBalance(avl2.root, 3);
+    avl2.insertAndBalance(avl2.root, 1);
+    avl2.insertAndBalance(avl2.root, 4);
+    avl2.insertAndBalance(avl2.root, 5);
+    
+    assertEquals(3, avl2.root.value);
+    assertEquals(1, avl2.root.leftChild.value);
+    assertEquals(4, avl2.root.rightChild.value);
+    assertEquals(5, avl2.root.rightChild.rightChild.value);
+    
+    avl2.deleteAndBalance(avl2.root, 1);
+    assertEquals(4, avl2.root.value);
+    assertEquals(3, avl2.root.leftChild.value);
+    assertEquals(5, avl2.root.rightChild.value);
+	}
+	
+	@Test
+	public void testDeleteWithBalance_RightLeftCase()
+	{
+	  avl2.insertAndBalance(avl2.root, 3);
+    avl2.insertAndBalance(avl2.root, 1);
+    avl2.insertAndBalance(avl2.root, 5);
+    avl2.insertAndBalance(avl2.root, 4);
+    
+    assertEquals(3, avl2.root.value);
+    assertEquals(1, avl2.root.leftChild.value);
+    assertEquals(5, avl2.root.rightChild.value);
+    assertEquals(4, avl2.root.rightChild.leftChild.value);
+    
+    avl2.deleteAndBalance(avl2.root, 1);
+    
+    assertEquals(4, avl2.root.value);
+    assertEquals(3, avl2.root.leftChild.value);
+    assertEquals(5, avl2.root.rightChild.value);
+	}
+	
+	@Test
+	public void testDeleteWithBalance_nonExistentNode()
+	{
+	  avl2.insertAndBalance(avl2.root, 3);
+    avl2.insertAndBalance(avl2.root, 1);
+    avl2.insertAndBalance(avl2.root, 5);
+    avl2.insertAndBalance(avl2.root, 4);
+    
+    avl2.deleteAndBalance(avl2.root, 99);
+    
+	}
 }

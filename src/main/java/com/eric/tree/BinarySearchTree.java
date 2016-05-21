@@ -1,5 +1,23 @@
 package com.eric.tree;
 
+/**
+ * Binary Search Tree.
+ * 
+ * Tree data structure where each node contains a value and has 2 children: left & right.
+ * The left child's value is less than or equal to the current node's value.
+ * The right child's value is greater than the current node's value.
+ * 
+ * Complexity:
+ * 
+ * Average              Worst
+ * Search: O(log n)     O(n)
+ * Insert: O(log n)     O(n)
+ * Delete: O(log n)     O(n)
+ * Space:  O(n)         O(n)
+ * 
+ * @author Eric Leung
+ *
+ */
 public class BinarySearchTree implements Tree
 {
 	protected TreeNode root;
